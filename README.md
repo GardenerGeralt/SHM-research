@@ -1,1 +1,1 @@
-# SHM-research-project
+# SHM research project
