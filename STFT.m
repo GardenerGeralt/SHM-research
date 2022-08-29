@@ -23,7 +23,7 @@ function [time, freq, X, window] = STFT(x, win_width, win_ovrlp, varargin)
         %Xm = Xm(1:N/2);
         %Xm_reduced = zeros(win_width/2, 1);
         for k = K
-            Xmk = sum(window .* exp(-1i * freq(k) * (0:win_width-1)));
+            Xmk = sum(window .* exp(-1i * freq(k) * (last_nonzero-win_width:last_nonzero-1)));
             X(k, m) = Xmk;
             %Xm_reduced(k) = sum(Xm((k-1)*win_width+1:k*win_width));
         end
