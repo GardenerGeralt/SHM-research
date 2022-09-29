@@ -1,11 +1,8 @@
 function [time, freq, X, window] = STFT(x, win_width, win_ovrlp, varargin)
     % STFT: Short-Time Fourier Transform
     % args: amplitude, time
-    %   Detailed explanation goes here
     N = length(x); % number of samples
-    indices = 1:N; % vector of sample indices
     w0 = 2 * pi / win_width; % fundamental frequency
-    % X = x .* WINDOW(N, win_width, win_ovrlp) .* exp(-1i * freq); 
     windows = WINDOW(N, win_width, win_ovrlp); % generate windows
     win_size = size(windows); % size of windows array
     win_nr = win_size(1); % number of windows
@@ -14,21 +11,14 @@ function [time, freq, X, window] = STFT(x, win_width, win_ovrlp, varargin)
     freq = w0 * K; % vector of harmonic frequencies up to the nyquist frequency
     time = 1:win_nr; % vector of window indices
     X = zeros(length(K), win_nr); % preallocated space for stft coefficients
-    %X = zeros(N/2, win_nr);
     for m = 1:win_nr
         window = x .* windows(m, :);
         last_nonzero = find(window,1,'last');
         window = window(last_nonzero-win_width+1:last_nonzero);
-        %Xm = fft(window);
-        %Xm = Xm(1:N/2);
-        %Xm_reduced = zeros(win_width/2, 1);
         for k = K
             Xmk = sum(window .* exp(-1i * freq(k) * (last_nonzero-win_width:last_nonzero-1)));
             X(k, m) = Xmk;
-            %Xm_reduced(k) = sum(Xm((k-1)*win_width+1:k*win_width));
         end
-        
-        %X(:, m) = Xm;
     end
 
     function [win] = WINDOW(N, width, ovrlp)
