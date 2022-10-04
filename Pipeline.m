@@ -28,6 +28,7 @@ for exp = 1:12
                     T = t;
                 else
                     [X, T] = make_unique(x, t, makeunique_methods{i});
+                    [X, T] = pad_empty_cycles(X, T); % IMPORTANT: also leave unique w/o padding?
 %                     [s_lssp, f_lssp] = plomb(gather(x), gather(t));
 %                     size_lssp(end+1) = numel(s_lssp);
                 end
